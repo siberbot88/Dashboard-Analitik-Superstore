@@ -1,0 +1,292 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dasbor Analitik Visual Superstore</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Lexend:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="./styles/style.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="dashboard-header">
+        <div class="header-copy">
+          <p class="eyebrow">Analitik Superstore D3.js</p>
+          <h1>Dasbor Analitik Visual Superstore</h1>
+          <p>
+            Dasbor interaktif untuk menganalisis penjualan wilayah, produk
+            terlaris, dan demand produk dari data Superstore.
+          </p>
+        </div>
+        <div class="dataset-status" aria-live="polite">
+          <span id="data-status-dot" class="status-dot status-dot-loading"></span>
+          <span id="data-status">Memuat CSV...</span>
+        </div>
+      </header>
+
+      <main>
+        <section class="dashboard-intro" aria-label="Deskripsi utama dashboard">
+          <div class="intro-header">
+            <div>
+              <p class="intro-eyebrow">Studi Kasus Superstore</p>
+              <h1>Dashboard Analisis Penjualan Superstore</h1>
+              <p class="intro-summary">
+                Ringkasan analisis penjualan, produk terlaris, dan demand produk
+                dari dataset ritel Superstore.
+              </p>
+            </div>
+            <button
+              id="intro-toggle"
+              class="intro-toggle"
+              type="button"
+              aria-expanded="true"
+              aria-controls="intro-body"
+            >
+              Sembunyikan Deskripsi
+            </button>
+          </div>
+
+          <div id="intro-body" class="intro-body">
+            <div class="intro-content">
+              <p>
+                Dashboard ini menampilkan analisis penjualan dari dataset
+                Superstore, yaitu studi kasus perusahaan ritel yang menjual
+                kebutuhan kantor, furniture, dan produk teknologi ke pelanggan
+                dari berbagai segmen pasar.
+              </p>
+              <p>
+                Data mencakup informasi pesanan, lokasi penjualan, kategori
+                produk, jumlah barang terjual, penjualan, laba, biaya pengiriman,
+                dan waktu transaksi. Setiap grafik memiliki fokus analisis yang
+                berbeda agar pengguna dapat membaca wilayah terbaik, produk
+                terlaris, dan pola permintaan dengan lebih jelas.
+              </p>
+            </div>
+
+            <div class="intro-cards">
+              <article class="intro-card">
+                <h3>Analisis Lokasi</h3>
+                <p>Melihat penjualan berdasarkan pasar, wilayah, negara, provinsi, dan kota.</p>
+              </article>
+
+              <article class="intro-card">
+                <h3>Analisis Produk</h3>
+                <p>Melihat kategori, subkategori, dan produk dengan kontribusi penjualan terbesar.</p>
+              </article>
+
+              <article class="intro-card">
+                <h3>Analisis Demand</h3>
+                <p>Melihat permintaan produk berdasarkan waktu dan kategori dari jumlah barang terjual.</p>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section id="app-message" class="app-message" hidden></section>
+
+        <nav class="tab-list" aria-label="Halaman analisis">
+          <button class="tab-button is-active" type="button" data-tab="location">
+            Analisis Penjualan Wilayah
+          </button>
+          <button class="tab-button" type="button" data-tab="product">
+            Analisis Produk Terlaris
+          </button>
+          <button class="tab-button" type="button" data-tab="demand">
+            Analisis Demand Produk
+          </button>
+        </nav>
+
+        <section id="tab-location" class="tab-panel is-active" data-panel="location">
+          <section class="filter-panel" aria-label="Filter analisis penjualan wilayah">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Halaman 1</p>
+                <h2>Diagram Pohon Radial - Penjualan Berdasarkan Lokasi</h2>
+              </div>
+              <button class="button-primary" type="button" data-reset="location">
+                Atur Ulang Filter
+              </button>
+            </div>
+            <p class="panel-description">
+              Menjawab pertanyaan: pasar, wilayah, negara, provinsi, atau kota
+              mana yang menghasilkan penjualan terbesar?
+            </p>
+            <div class="filter-grid filter-grid-compact">
+              <label class="field">
+                <span>Pasar</span>
+                <select id="location-filter-market"></select>
+              </label>
+              <label class="field">
+                <span>Wilayah</span>
+                <select id="location-filter-region"></select>
+              </label>
+              <label class="field">
+                <span>Negara</span>
+                <select id="location-filter-country"></select>
+              </label>
+              <label class="field">
+                <span>Provinsi/Wilayah</span>
+                <select id="location-filter-state"></select>
+              </label>
+              <label class="field">
+                <span>Kota</span>
+                <select id="location-filter-city"></select>
+              </label>
+              <label class="field">
+                <span>Metrik</span>
+                <select id="location-filter-metric"></select>
+              </label>
+            </div>
+            <p id="location-filter-summary" class="filter-summary">Semua data | Metrik: Penjualan</p>
+          </section>
+
+          <section id="location-kpis" class="kpi-grid kpi-grid-compact" aria-label="KPI penjualan wilayah"></section>
+
+          <article class="chart-card chart-card-tree">
+            <div class="chart-card-header">
+              <div>
+                <p class="eyebrow">Analisis lokasi</p>
+                <h2>Diagram Pohon Radial</h2>
+              </div>
+              <p>Hierarki lokasi: pasar, wilayah, negara, provinsi, dan kota.</p>
+            </div>
+            <div id="radial-tree" class="chart-host chart-host-tree"></div>
+          </article>
+        </section>
+
+        <section id="tab-product" class="tab-panel" data-panel="product" hidden>
+          <section class="filter-panel" aria-label="Filter analisis produk terlaris">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Halaman 2</p>
+                <h2>Zoomable Sunburst - Produk Terlaris</h2>
+              </div>
+              <button class="button-primary" type="button" data-reset="product">
+                Atur Ulang Filter
+              </button>
+            </div>
+            <p class="panel-description">
+              Menjawab pertanyaan: produk, subkategori, dan kategori apa yang
+              paling laris atau memberi kontribusi terbesar?
+            </p>
+            <div class="filter-grid filter-grid-compact">
+              <label class="field">
+                <span>Kategori</span>
+                <select id="product-filter-category"></select>
+              </label>
+              <label class="field">
+                <span>Subkategori</span>
+                <select id="product-filter-subCategory"></select>
+              </label>
+              <label class="field">
+                <span>Produk</span>
+                <select id="product-filter-product"></select>
+              </label>
+              <label class="field">
+                <span>Segmen</span>
+                <select id="product-filter-segment"></select>
+              </label>
+              <label class="field">
+                <span>Metrik</span>
+                <select id="product-filter-metric"></select>
+              </label>
+            </div>
+            <p id="product-filter-summary" class="filter-summary">Semua data | Metrik: Penjualan</p>
+          </section>
+
+          <section id="product-kpis" class="kpi-grid kpi-grid-compact" aria-label="KPI produk terlaris"></section>
+
+          <article class="chart-card chart-card-wide">
+            <div class="chart-card-header">
+              <div>
+                <p class="eyebrow">Analisis produk</p>
+                <h2>Zoomable Sunburst</h2>
+              </div>
+              <p>Klik segmen untuk memperbesar kategori, subkategori, atau produk.</p>
+            </div>
+            <div id="sunburst" class="chart-host chart-host-sunburst"></div>
+          </article>
+        </section>
+
+        <section id="tab-demand" class="tab-panel" data-panel="demand" hidden>
+          <section class="filter-panel" aria-label="Filter analisis demand produk">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Halaman 3</p>
+                <h2>Diagram Batang Bertumpuk Radial - Demand Produk</h2>
+              </div>
+              <button class="button-primary" type="button" data-reset="demand">
+                Atur Ulang Filter
+              </button>
+            </div>
+            <p class="panel-description">
+              Menjawab pertanyaan: pada tahun atau minggu apa demand produk
+              paling tinggi, dan kategori apa yang paling banyak diminta?
+            </p>
+            <div class="filter-grid">
+              <label class="field">
+                <span>Tahun</span>
+                <select id="demand-filter-year"></select>
+              </label>
+              <label class="field">
+                <span>Minggu</span>
+                <select id="demand-filter-week"></select>
+              </label>
+              <label class="field">
+                <span>Pasar</span>
+                <select id="demand-filter-market"></select>
+              </label>
+              <label class="field">
+                <span>Segmen</span>
+                <select id="demand-filter-segment"></select>
+              </label>
+              <label class="field">
+                <span>Kategori</span>
+                <select id="demand-filter-category"></select>
+              </label>
+              <label class="field">
+                <span>Level Waktu</span>
+                <select id="demand-filter-timeLevel"></select>
+              </label>
+            </div>
+            <p id="demand-filter-summary" class="filter-summary">Semua data | Level Waktu: Tahun</p>
+          </section>
+
+          <section id="demand-kpis" class="kpi-grid kpi-grid-compact" aria-label="KPI demand produk"></section>
+
+          <article class="chart-card">
+            <div class="chart-card-header">
+              <div>
+                <p class="eyebrow">Analisis demand</p>
+                <h2>Diagram Batang Bertumpuk Radial</h2>
+              </div>
+              <p>Sudut adalah tahun atau minggu, tumpukan adalah kategori, dan nilai adalah jumlah barang.</p>
+            </div>
+            <div id="radial-stacked-bar" class="chart-host chart-host-tall"></div>
+          </article>
+        </section>
+      </main>
+
+      <section class="dataset-note" aria-label="Penjelasan dataset">
+        Dataset Superstore berisi data transaksi penjualan yang mencakup produk
+        seperti furniture, perlengkapan kantor, dan teknologi. Data ini digunakan
+        untuk membantu analisis performa penjualan, kontribusi produk, dan pola
+        permintaan pelanggan.
+      </section>
+
+      <footer class="footer-note">
+        Sumber data: data/superstore.csv. Dibuat oleh Mohammad Bayu Rizki menggunakan HTML, CSS, JavaScript ES Modules, dan D3.js v7.
+      </footer>
+    </div>
+
+    <div id="chart-tooltip" class="chart-tooltip" role="tooltip" hidden></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0"></script>
+    <script type="module" src="./src/main.js"></script>
+  </body>
+</html>
