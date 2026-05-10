@@ -1,7 +1,7 @@
 import { loadData } from "./data.js";
-import { renderRadialTree } from "./charts/radialTree.js";
-import { renderSunburst } from "./charts/sunburst.js";
-import { renderRadialStackedBar } from "./charts/radialStackedBar.js";
+import { renderRadialTree } from "./charts/radialTree.js?v=sunburst-label-fix-v2";
+import { renderSunburst } from "./charts/sunburst.js?v=sunburst-label-fix-v2";
+import { renderRadialStackedBar } from "./charts/radialStackedBar.js?v=sunburst-label-fix-v2";
 import { DEFAULT_PAGE_FILTERS, resetPageFilters, setPageFilter, state } from "./state.js";
 import {
   formatCurrency,
@@ -10,7 +10,9 @@ import {
   formatMetric,
   getMetricValue,
   metricLabel,
-} from "./utils.js";
+} from "./utils.js?v=sunburst-label-fix-v2";
+
+console.log("Dashboard build: sunburst-label-fix-v2");
 
 const METRIC_OPTIONS_BASIC = [
   { value: "Sales", label: "Penjualan" },

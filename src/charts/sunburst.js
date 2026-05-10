@@ -14,7 +14,7 @@ import {
   showTooltip,
   tooltipHtml,
   truncateLabel,
-} from "../utils.js";
+} from "../utils.js?v=sunburst-label-fix-v2";
 
 const SUNBURST_CONFIG = {
   height: 720,
@@ -97,16 +97,20 @@ export function renderSunburst(data, options = {}) {
     .filter((d) => d.children)
     .style("cursor", "pointer");
 
+  const labelData = root.descendants().filter((d) => {
+    return labelVisible(d.current || d, d);
+  });
+
   const label = svg
     .append("g")
     .attr("pointer-events", "none")
     .attr("text-anchor", "middle")
     .selectAll("text")
-    .data(root.descendants().slice(1))
+    .data(labelData)
     .join("text")
-    .attr("class", "sunburst-label")
+    .attr("class", (d) => `sunburst-label depth-${d.depth}${d.depth >= 3 ? " product-label" : ""}`)
     .attr("dy", "0.35em")
-    .attr("fill-opacity", (d) => +labelVisible(d.current, d))
+    .attr("fill-opacity", 1)
     .attr("transform", (d) => labelTransform(d.current, radius, root.height))
     .text((d) => truncateLabel(d.data.name, d.depth === 1 ? 18 : 14));
 
@@ -277,8 +281,8 @@ function arcVisible(d) {
   return d.y1 <= 4 && d.y0 >= 1 && d.x1 > d.x0;
 }
 
-function labelVisible(layout, node) {
-  return node.depth > 0 && node.depth <= 2 && layout.y1 <= 3 && layout.y0 >= 1 && layout.x1 - layout.x0 > 0.08;
+function labelVisible(layout, node = layout) {
+  return node.depth > 0 && node.depth <= 2 && layout.y1 <= 3 && layout.y0 >= 1 && layout.x1 - layout.x0 > 0.09;
 }
 
 function labelTransform(d, radius, height) {

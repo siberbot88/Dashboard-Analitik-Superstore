@@ -11,7 +11,7 @@ import {
   showTooltip,
   tooltipHtml,
   truncateLabel,
-} from "../utils.js";
+} from "../utils.js?v=sunburst-label-fix-v2";
 
 const MAX_PERIOD_LABELS = 24;
 
