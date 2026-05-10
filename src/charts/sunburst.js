@@ -14,7 +14,7 @@ import {
   showTooltip,
   tooltipHtml,
   truncateLabel,
-} from "../utils.js?v=sunburst-label-fix-v2";
+} from "../utils.js?v=sunburst-label-fix-v4";
 
 const SUNBURST_CONFIG = {
   height: 720,
@@ -110,7 +110,8 @@ export function renderSunburst(data, options = {}) {
     .join("text")
     .attr("class", (d) => `sunburst-label depth-${d.depth}${d.depth >= 3 ? " product-label" : ""}`)
     .attr("dy", "0.35em")
-    .attr("fill-opacity", 1)
+    .attr("opacity", 1)
+    .attr("display", (d) => labelVisible(d.current, d) ? null : "none")
     .attr("transform", (d) => labelTransform(d.current, radius, root.height))
     .text((d) => truncateLabel(d.data.name, d.depth === 1 ? 18 : 14));
 
@@ -173,10 +174,11 @@ export function renderSunburst(data, options = {}) {
 
     label
       .filter(function (d) {
-        return +this.getAttribute("fill-opacity") || labelVisible(d.target, d);
+        return this.getAttribute("display") !== "none" || labelVisible(d.target, d);
       })
+      .attr("display", (d) => labelVisible(d.target, d) ? null : "none")
       .transition(transition)
-      .attr("fill-opacity", (d) => +labelVisible(d.target, d))
+      .attr("opacity", (d) => +labelVisible(d.target, d))
       .attrTween("transform", (d) => () => labelTransform(d.current, radius, root.height));
   }
 }
@@ -303,3 +305,4 @@ function renderLegend(container, categories, color) {
       return `<i class="legend-swatch" style="background:${color(category)}"></i>${category}`;
     });
 }
+

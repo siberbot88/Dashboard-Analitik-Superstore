@@ -12,7 +12,7 @@ import {
   showTooltip,
   tooltipHtml,
   truncateLabel,
-} from "../utils.js?v=sunburst-label-fix-v2";
+} from "../utils.js?v=sunburst-label-fix-v4";
 
 const RADIAL_TREE_CONFIG = {
   width: 900,
@@ -277,3 +277,4 @@ function nodeColor(node, color) {
 
   return color(node.data.level || node.depth);
 }
+

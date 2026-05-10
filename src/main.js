@@ -1,7 +1,7 @@
 import { loadData } from "./data.js";
-import { renderRadialTree } from "./charts/radialTree.js?v=sunburst-label-fix-v2";
-import { renderSunburst } from "./charts/sunburst.js?v=sunburst-label-fix-v2";
-import { renderRadialStackedBar } from "./charts/radialStackedBar.js?v=sunburst-label-fix-v2";
+import { renderRadialTree } from "./charts/radialTree.js?v=sunburst-label-fix-v4";
+import { renderSunburst } from "./charts/sunburst.js?v=sunburst-label-fix-v4";
+import { renderRadialStackedBar } from "./charts/radialStackedBar.js?v=sunburst-label-fix-v4";
 import { DEFAULT_PAGE_FILTERS, resetPageFilters, setPageFilter, state } from "./state.js";
 import {
   formatCurrency,
@@ -10,9 +10,9 @@ import {
   formatMetric,
   getMetricValue,
   metricLabel,
-} from "./utils.js?v=sunburst-label-fix-v2";
+} from "./utils.js?v=sunburst-label-fix-v4";
 
-console.log("Dashboard build: sunburst-label-fix-v2");
+console.log("Dashboard build: sunburst-label-fix-v4");
 
 const METRIC_OPTIONS_BASIC = [
   { value: "Sales", label: "Penjualan" },
@@ -523,3 +523,4 @@ function escapeText(value) {
 function escapeAttribute(value) {
   return escapeText(value).replace(/"/g, "&quot;");
 }
+

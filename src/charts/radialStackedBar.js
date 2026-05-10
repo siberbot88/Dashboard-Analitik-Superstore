@@ -11,7 +11,7 @@ import {
   showTooltip,
   tooltipHtml,
   truncateLabel,
-} from "../utils.js?v=sunburst-label-fix-v2";
+} from "../utils.js?v=sunburst-label-fix-v4";
 
 const MAX_PERIOD_LABELS = 24;
 
@@ -232,3 +232,4 @@ function renderLegend(container, categories, color) {
       return `<i class="legend-swatch" style="background:${color(category)}"></i>${category}`;
     });
 }
+
